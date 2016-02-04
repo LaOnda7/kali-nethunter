@@ -436,6 +436,7 @@ def main():
 	parser.add_argument('--nokernel', '-nk', action='store_true', help='Build without the kernel installer')
 	parser.add_argument('--generic', '-g', action='store', metavar='ARCH', help='Build a generic installer (modify ramdisk only)')
 	parser.add_argument('--rootfs', '-fs', action='store', metavar='SIZE', help='Build with Kali chroot rootfs (full or minimal)')
+	parser.add_argument('--sdcard', '-s', action='store_true', help='Install Kali chroot to an external sdcard')
 	parser.add_argument('--release', '-r', action='store', metavar='VERSION', help='Specify NetHunter release version')
 
 	args = parser.parse_args()
@@ -516,6 +517,8 @@ def main():
 		file_tag += '-' + Arch
 	if args.rootfs:
 		file_tag += '-kalifs-' + args.rootfs
+	if args.sdcard:
+		file_tag += '-sdcard'
 	if args.release:
 		file_tag += '-' + args.release
 	else:
@@ -536,6 +539,11 @@ def main():
 
 	# Set up the update zip
 	setupupdate()
+
+	if args.sdcard:
+		configfile(os.path.join('tmp_out', 'META-INF', 'com', 'google', 'android', 'update-binary'), {
+			'use_sdcard':'true'
+		})
 
 	file_name = 'update-nethunter-' + file_tag + '.zip'
 

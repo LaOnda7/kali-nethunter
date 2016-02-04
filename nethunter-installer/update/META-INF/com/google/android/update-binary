@@ -1,6 +1,10 @@
 #!/sbin/sh
 # Kali NetHunter installer
 
+## start build generated variables
+use_sdcard=
+## end build generated variables
+
 [ "$3" ] && {
 	zip=$3
 	console=/proc/$$/fd/$2
@@ -97,6 +101,7 @@ print "@Starting the install process"
 
 mount /data
 mount /system
+[ "$use_sdcard" ] && mount /external_sd
 
 progress 0.1
 
@@ -113,6 +118,11 @@ cp tools/busybox /sbin/busybox_nh
 
 print "@Checking for previous versions of NetHunter"
 sh tools/previnstall.sh
+
+[ "$use_sdcard" ] && {
+	print "@Preparing block filesystem for sdcard"
+	sh tools/preparefs.sh
+}
 
 progress 0.2
 

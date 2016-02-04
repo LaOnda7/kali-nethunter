@@ -14,6 +14,7 @@ print() {
 }
 
 NHSYS=/data/local/nhsystem
+KSYS=$NHSYS/kali-$ARCH
 
 # Check installer for kalifs archive
 KALIFS=$(ls $TMP/kalifs-*.tar.xz)
@@ -23,12 +24,12 @@ KALIFS=$(ls $TMP/kalifs-*.tar.xz)
 # If kalifs-*.tar.xz is present, then extract
 [ -f "$KALIFS" ] && {
 	print "Found Kali chroot to be installed: $KALIFS"
-	mkdir -p "$NHSYS"
+	mkdir -p "$KSYS"
 
 	# Remove previous chroot
-	[ -d "$NHSYS/kali-$ARCH" ] && {
+	[ -e "$KSYS/"* ] && {
 		print "Removing previous chroot..."
-		rm -rf "$NHSYS/kali-$ARCH"
+		rm -rf "$KSYS/*"
 	}
 
 	# Extract new chroot
